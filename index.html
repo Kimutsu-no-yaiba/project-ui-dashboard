@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusTracker Pro - Fleet Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-bus"></i>
+                <span class="logo-text">BusTracker Pro</span>
+                <span class="subtitle">Real-time Transit Management</span>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search buses, routes, or stops...">
+            </div>
+            <div class="header-actions">
+                <span class="live-indicator"><i class="fas fa-circle"></i> Live</span>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count">3</span>
+                </div>
+                <div class="settings">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="user-profile">
+                    <span>Sarah Johnson</span>
+                    <span class="user-role">Fleet Manager</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <div class="nav-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Live Tracking</span>
+                    <div class="tracking-stats">
+                        <span class="stat-item">24 Active</span>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-route"></i>
+                    <span>Routes</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Schedules</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Alerts</span>
+                    <span class="alert-count">3</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+            </nav>
+            
+            <div class="system-status">
+                <h4>System Status</h4>
+                <div class="status-item">
+                    <span>GPS Accuracy</span>
+                    <span class="status-value">99.5%</span>
+                </div>
+                <div class="status-item">
+                    <span>Network Status</span>
+                    <span class="status-value online">Online</span>
+                </div>
+                <div class="status-item">
+                    <span>Last Update</span>
+                    <span class="status-value">2s ago</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Fleet Dashboard</h1>
+                <p>Monitor your entire bus fleet in real-time</p>
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Bus
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Total Buses</h3>
+                        <div class="metric-value">48</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> +2 this week
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Active Routes</h3>
+                        <div class="metric-value">12</div>
+                        <div class="metric-status">
+                            <i class="fas fa-circle running"></i> Running on time
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Current Alerts</h3>
+                        <div class="metric-value">3</div>
+                        <div class="metric-priority">
+                            <i class="fas fa-arrow-up"></i> 2 high priority
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>On-Time Performance</h3>
+                        <div class="metric-value">94.2%</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> +1.3% today
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Content -->
+            <div class="dashboard-grid">
+                <!-- Live Map Section -->
+                <div class="dashboard-section map-section">
+                    <div class="section-header">
+                        <h2>Live Map</h2>
+                        <div class="section-actions">
+                            <button class="btn-icon"><i class="fas fa-expand"></i> Fullscreen</button>
+                            <button class="btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <div id="map"></div>
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-color active"></div>
+                                <span>Active Buses (24)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color delayed"></div>
+                                <span>Delayed Buses (3)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color inactive"></div>
+                                <span>Inactive (21)</span>
+                            </div>
+                        </div>
+                        <div class="map-controls">
+                            <button class="map-btn"><i class="fas fa-plus"></i></button>
+                            <button class="map-btn"><i class="fas fa-minus"></i></button>
+                            <button class="map-btn"><i class="fas fa-crosshairs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-section activity-section">
+                    <div class="section-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item completed">
+                            <div class="activity-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Bus #247 completed Route A</h4>
+                                <span class="activity-time">2 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item warning">
+                            <div class="activity-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Bus #156 is running 5 min late</h4>
+                                <span class="activity-time">8 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item maintenance">
+                            <div class="activity-icon">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Maintenance alert: Bus #089</h4>
+                                <span class="activity-time">15 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item info">
+                            <div class="activity-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Bus #123 started Route C</h4>
+                                <span class="activity-time">22 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item driver">
+                            <div class="activity-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Driver John Smith signed in</h4>
+                                <span class="activity-time">1 hour ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="view-all">
+                        <a href="#">View all activity</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="quick-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Route</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Schedule Trip</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-wrench"></i>
+                        <span>Maintenance</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Generate Report</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-bell"></i>
+                        <span>Send Alert</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fleet Status Overview & Performance Metrics -->
+            <div class="dashboard-grid two-column">
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Fleet Status Overview</h2>
+                    </div>
+                    <div class="fleet-status">
+                        <div class="status-item">
+                            <div class="status-icon active">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="status-content">
+                                <h3>Active Buses</h3>
+                                <span class="status-subtitle">Currently in service</span>
+                                <div class="status-number">24</div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-icon idle">
+                                <i class="fas fa-pause"></i>
+                            </div>
+                            <div class="status-content">
+                                <h3>Idle Buses</h3>
+                                <span class="status-subtitle">At depot or stops</span>
+                                <div class="status-number">18</div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-icon maintenance">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <div class="status-content">
+                                <h3>Maintenance</h3>
+                                <span class="status-subtitle">Under repair</span>
+                                <div class="status-number">6</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Performance Metrics</h2>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">On-Time Performance</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 94.2%"></div>
+                            </div>
+                            <span class="metric-percent">94.2%</span>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="metric-label">Route Completion</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 89.7%"></div>
+                            </div>
+                            <span class="metric-percent">89.7%</span>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="metric-label">Fuel Efficiency</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 87.3%"></div>
+                            </div>
+                            <span class="metric-percent">87.3%</span>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="metric-label">Customer Satisfaction</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 92.1%"></div>
+                            </div>
+                            <span class="metric-percent">92.1%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Routes & Today's Schedule -->
+            <div class="dashboard-grid two-column">
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Active Routes</h2>
+                        <a href="#" class="view-all-link">View All</a>
+                    </div>
+                    <div class="routes-list">
+                        <div class="route-item">
+                            <div class="route-label">A</div>
+                            <div class="route-content">
+                                <h4>Route A - Downtown Loop</h4>
+                                <span class="route-stats">6 buses active • 25 min avg</span>
+                            </div>
+                            <div class="route-status on-time">On time</div>
+                        </div>
+                        
+                        <div class="route-item">
+                            <div class="route-label">B</div>
+                            <div class="route-content">
+                                <h4>Route B - Airport Express</h4>
+                                <span class="route-stats">4 buses active • 45 min avg</span>
+                            </div>
+                            <div class="route-status delayed">Delayed</div>
+                        </div>
+                        
+                        <div class="route-item">
+                            <div class="route-label">C</div>
+                            <div class="route-content">
+                                <h4>Route C - University Line</h4>
+                                <span class="route-stats">8 buses active • 20 min avg</span>
+                            </div>
+                            <div class="route-status on-time">On time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Today's Schedule</h2>
+                        <a href="#" class="manage-link">Manage</a>
+                    </div>
+                    <div class="schedule-list">
+                        <div class="schedule-item active">
+                            <div class="schedule-time">6</div>
+                            <div class="schedule-content">
+                                <h4>Morning Rush</h4>
+                                <span class="schedule-period">6:00 AM - 9:00 AM</span>
+                            </div>
+                            <div class="schedule-status">Active</div>
+                        </div>
+                        
+                        <div class="schedule-item upcoming">
+                            <div class="schedule-time">9</div>
+                            <div class="schedule-content">
+                                <h4>Mid-Day Service</h4>
+                                <span class="schedule-period">9:00 AM - 3:00 PM</span>
+                            </div>
+                            <div class="schedule-status">Upcoming</div>
+                        </div>
+                        
+                        <div class="schedule-item upcoming">
+                            <div class="schedule-time">3</div>
+                            <div class="schedule-content">
+                                <h4>Evening Rush</h4>
+                                <span class="schedule-period">3:00 PM - 7:00 PM</span>
+                            </div>
+                            <div class="schedule-status">Upcoming</div>
+                        </div>
+                        
+                        <div class="schedule-item upcoming">
+                            <div class="schedule-time">7</div>
+                            <div class="schedule-content">
+                                <h4>Night Service</h4>
+                                <span class="schedule-period">7:00 PM - 11:00 PM</span>
+                            </div>
+                            <div class="schedule-status">Upcoming</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts & Notifications -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>Active Alerts & Notifications</h2>
+                    <div class="section-actions">
+                        <a href="#" class="mark-read">Mark All Read</a>
+                        <button class="btn btn-primary">Create Alert</button>
+                    </div>
+                </div>
+                <div class="alerts-grid">
+                    <div class="alert-card critical">
+                        <div class="alert-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>Engine Failure - Bus #089</h4>
+                            <p>Immediate maintenance required</p>
+                            <span class="alert-time">15 minutes ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-card warning">
+                        <div class="alert-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>Route Delay - Route B</h4>
+                            <p>Traffic congestion causing delays</p>
+                            <span class="alert-time">8 minutes ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-card info">
+                        <div class="alert-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>Schedule Update</h4>
+                            <p>New weekend schedule effective tomorrow</p>
+                            <span class="alert-time">2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Driver Management -->
+            <div class="dashboard-grid two-column">
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Driver Management</h2>
+                        <button class="btn btn-secondary">+ Add Driver</button>
+                    </div>
+                    <div class="driver-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-number">32</div>
+                            <div class="stat-label">Total Drivers</div>
+                        </div>
+                        <div class="driver-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">On Duty</span>
+                                <span class="breakdown-value">24</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Off Duty</span>
+                                <span class="breakdown-value">8</span>
+                            </div>
+                        </div>
+                        <div class="driver-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Avg. Hours/Driver</span>
+                                <span class="metric-value">6.8 hrs</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Safety Score</span>
+                                <span class="metric-value">96.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="driver-list">
+                        <div class="driver-item">
+                            <div class="driver-avatar">JS</div>
+                            <div class="driver-info">
+                                <h4>John Smith</h4>
+                                <span class="driver-id">ID: DR001</span>
+                            </div>
+                            <div class="driver-status on-duty">On Duty</div>
+                            <div class="driver-route">Route A</div>
+                            <div class="driver-hours">6.5 hrs</div>
+                        </div>
+                        
+                        <div class="driver-item">
+                            <div class="driver-avatar">MG</div>
+                            <div class="driver-info">
+                                <h4>Maria Garcia</h4>
+                                <span class="driver-id">ID: DR002</span>
+                            </div>
+                            <div class="driver-status break">Break</div>
+                            <div class="driver-route">-</div>
+                            <div class="driver-hours">4.2 hrs</div>
+                        </div>
+                        
+                        <div class="driver-item">
+                            <div class="driver-avatar">DW</div>
+                            <div class="driver-info">
+                                <h4>David Wilson</h4>
+                                <span class="driver-id">ID: DR003</span>
+                            </div>
+                            <div class="driver-status on-duty">On Duty</div>
+                            <div class="driver-route">Route C</div>
+                            <div class="driver-hours">7.1 hrs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Driver Statistics</h2>
+                    </div>
+                    <div class="driver-statistics">
+                        <div class="stat-chart">
+                            <div class="chart-container">
+                                <canvas id="driverChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance & Fuel Management -->
+            <div class="dashboard-grid two-column">
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Maintenance Schedule</h2>
+                        <button class="btn btn-secondary">Schedule Service</button>
+                    </div>
+                    <div class="maintenance-list">
+                        <div class="maintenance-item overdue">
+                            <div class="maintenance-icon">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="maintenance-content">
+                                <h4>Bus #089 - Engine Service</h4>
+                                <span class="maintenance-status">Overdue by 3 days</span>
+                            </div>
+                            <button class="btn btn-small">Schedule</button>
+                        </div>
+                        
+                        <div class="maintenance-item due-soon">
+                            <div class="maintenance-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="maintenance-content">
+                                <h4>Bus #156 - Oil Change</h4>
+                                <span class="maintenance-status">Due in 2 days</span>
+                            </div>
+                            <button class="btn btn-small">Schedule</button>
+                        </div>
+                        
+                        <div class="maintenance-item completed">
+                            <div class="maintenance-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="maintenance-content">
+                                <h4>Bus #247 - Inspection</h4>
+                                <span class="maintenance-status">Completed yesterday</span>
+                            </div>
+                            <button class="btn btn-small">Complete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Fuel Management</h2>
+                        <a href="#" class="view-details">View Details</a>
+                    </div>
+                    <div class="fuel-stats">
+                        <div class="fuel-cost">
+                            <div class="fuel-icon">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                            <div class="fuel-amount">$12,450</div>
+                            <div class="fuel-label">Monthly Fuel Cost</div>
+                        </div>
+                        <div class="fuel-efficiency">
+                            <div class="efficiency-value">8.2</div>
+                            <div class="efficiency-label">MPG Average</div>
+                        </div>
+                    </div>
+                    <div class="fuel-routes">
+                        <h4>Fuel Efficiency by Route</h4>
+                        <div class="route-efficiency">
+                            <div class="route-fuel-item">
+                                <span class="route-name">Route A</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="efficiency-mpg">8.5 MPG</span>
+                            </div>
+                            <div class="route-fuel-item">
+                                <span class="route-name">Route B</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 78%"></div>
+                                </div>
+                                <span class="efficiency-mpg">7.8 MPG</span>
+                            </div>
+                            <div class="route-fuel-item">
+                                <span class="route-name">Route C</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 89%"></div>
+                                </div>
+                                <span class="efficiency-mpg">8.9 MPG</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics & Reports -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>Analytics & Reports</h2>
+                    <div class="analytics-controls">
+                        <select class="time-filter">
+                            <option>Last 30 Days</option>
+                            <option>Last 7 Days</option>
+                            <option>Last 24 Hours</option>
+                        </select>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="analytics-grid">
+                    <div class="analytics-chart">
+                        <h3>Fleet Performance Chart</h3>
+                        <p>Interactive analytics dashboard</p>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="key-metrics">
+                        <h3>Key Metrics</h3>
+                        <div class="metrics-list">
+                            <div class="metric-row">
+                                <span class="metric-name">Total Miles</span>
+                                <span class="metric-value">24,567</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Passengers</span>
+                                <span class="metric-value">18,934</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Revenue</span>
+                                <span class="metric-value">$45,678</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Incidents</span>
+                                <span class="metric-value">2</span>
+                            </div>
+                        </div>
+                        <div class="quick-reports">
+                            <h4>Quick Reports</h4>
+                            <div class="report-links">
+                                <a href="#" class="report-link">
+                                    <i class="fas fa-file-alt"></i> Daily Operations
+                                </a>
+                                <a href="#" class="report-link">
+                                    <i class="fas fa-chart-bar"></i> Route Performance
+                                </a>
+                                <a href="#" class="report-link">
+                                    <i class="fas fa-users"></i> Driver Reports
+                                </a>
+                                <a href="#" class="report-link">
+                                    <i class="fas fa-wrench"></i> Maintenance Log
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Settings & Support -->
+            <div class="dashboard-grid two-column">
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>System Settings</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="setting-content">
+                                <h4>Notification Settings</h4>
+                                <p>Configure alert preferences</p>
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <h4>Security Settings</h4>
+                                <p>User access and permissions</p>
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="setting-content">
+                                <h4>Data Management</h4>
+                                <p>Backup and sync settings</p>
+                            </div>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Support & Help</h2>
+                    </div>
+                    <div class="support-section">
+                        <div class="help-center">
+                            <div class="help-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="help-content">
+                                <h4>Need Help?</h4>
+                                <p>Our support team is here to assist you</p>
+                                <button class="btn btn-primary">Contact Support</button>
+                            </div>
+                        </div>
+                        <div class="help-resources">
+                            <a href="#" class="help-link">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Documentation</span>
+                            </a>
+                            <a href="#" class="help-link">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Tutorials</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

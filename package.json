@@ -1,0 +1,22 @@
+{
+  "name": "bustracker-ui",
+  "version": "1.0.0",
+  "description": "Bus Fleet Management Dashboard UI",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "build": "echo 'Build process here'",
+    "dev": "live-server --port=3000 --watch=css,js"
+  },
+  "keywords": [
+    "dashboard",
+    "fleet-management",
+    "bus-tracker",
+    "ui"
+  ],
+  "author": "Sri",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
